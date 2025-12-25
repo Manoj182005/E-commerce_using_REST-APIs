@@ -1,16 +1,28 @@
 
 export default class ProductModel{
     constructor(id, name, desc, price, imageUrl, category, sizes){
-        this.ide=id;
-        this.name=name;
-        this.desc=desc;
-        this.price=price;
-        this.imageUrl=imageUrl;
-        this.category=category;
-        this.sizes=sizes;
+        this.id = id;
+        this.name = name;
+        this.desc = desc;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.category = category;
+        this.sizes = sizes;
+    }
+    
+    static add(product){
+      product.id = products.length + 1;
+      products.push(product);
+      return product;
     }
 
-    static GetAll(){
+    static get(id){
+      const product = products.find((i)=>i.id ==id);
+      return product;
+
+    }
+
+    static getAll(){
         return products;
     }
 } 
