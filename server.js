@@ -1,17 +1,29 @@
+// 1. Import Exprerss
 import express from 'express';
-import bodyParser from 'body-parser';
 import productRouter from './src/features/product/product.routes.js';
+import userRouter from './src/features/user/user.routes.js';
+import authorizer from './src/middlewares/basicAuth.middleware.js';
 
+// 2. Create Server
 const server = express();
 
-server.use(bodyParser.json());
+server.use(express.json());
 
-server.use("/api/products", productRouter);
+// for all requests related to product, redirect to product routes.
+// localhost:3200/api/productss
+server.use(
+  '/api/products',
+  authorizer,
+  productRouter
+);
+server.use('/api/users', userRouter);
 
-server.get("/",(req, res)=>{
-    res.send("Welcome to E-commerce API")
-})
+// 3. Default request handler
+server.get('/', (req, res) => {
+  res.send('Welcome to Ecommerce APIs');
+});
 
-server.listen(3200, ()=>{
-    console.log("server is running on port 3200");
-})
+// 4. Specify port.
+server.listen(3200);
+
+console.log('Server is running at 3200');
