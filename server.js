@@ -1,28 +1,34 @@
 // 1. Import Exprerss
 import express from 'express';
 import swagger from 'swagger-ui-express';
+import cors from 'cors';
 
 import productRouter from './src/features/product/product.routes.js';
 import userRouter from './src/features/user/user.routes.js';
 import jwtAuth from './src/middlewares/jwt.middleware.js';
 import cartRouter from './src/features/cartItems/cartItems.routes.js';
 import apiDocs from './swagger.json' assert {type: 'json'};
-import connetToMongoDB from './src/config/mongodb.js';
 
 // 2. Create Server
 const server = express();
 
 // CORS policy configuration
-server.use((req, res, next)=>{
-  res.header('Access-Control-Allow-Origin','http://localhost:5500');
-  res.header('Access-Control-Allow-Headers','*');
-  res.header('Access-Control-Allow-Methods','*');
-  // return ok for preflight request.
-  if(req.method=="OPTIONS"){
-    return res.sendStatus(200);
-  }
-  next();
-})
+
+var corsOptions = {
+  origin: "http://localhost:5500"
+}
+server.use(cors(corsOptions));
+
+// server.use((req, res, next)=>{
+//   res.header('Access-Control-Allow-Origin','http://localhost:5500');
+//   res.header('Access-Control-Allow-Headers','*');
+//   res.header('Access-Control-Allow-Methods','*');
+//   // return ok for preflight request.
+//   if(req.method=="OPTIONS"){
+//     return res.sendStatus(200);
+//   }
+//   next();
+// })
 
 server.use(express.json());
 // Bearer <token>
@@ -52,9 +58,6 @@ server.use((req, res)=>{
 
 
 // 5. Specify port.
-server.listen(3200, () => {
-        console.log('Server is running at 3200');
-        connetToMongoDB();
-})
+server.listen(3200);
 
-
+console.log('Server is running at 3200');
