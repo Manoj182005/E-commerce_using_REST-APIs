@@ -2,12 +2,17 @@
 import express from 'express';
 import swagger from 'swagger-ui-express';
 import cors from 'cors';
+import fs from 'fs';
 
 import productRouter from './src/features/product/product.routes.js';
 import userRouter from './src/features/user/user.routes.js';
 import jwtAuth from './src/middlewares/jwt.middleware.js';
 import cartRouter from './src/features/cartItems/cartItems.routes.js';
-import apiDocs from './swagger.json' assert {type: 'json'};
+
+
+const apiDocs = JSON.parse(
+  fs.readFileSync('./swagger.json', 'utf-8')
+);
 
 // 2. Create Server
 const server = express();
