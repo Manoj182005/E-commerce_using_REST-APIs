@@ -9,7 +9,7 @@ class UserRepository{
 
      async signUp(newUser) {
         try{
-          // 1. Get the database
+
         const db = getDB();
         // 2. Get the collection
         const collection = db.collection(this.collection);
