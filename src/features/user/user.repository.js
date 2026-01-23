@@ -42,10 +42,10 @@ class UserRepository{
         try{
           // 1. Get the database
         const db = getDB();
-        // 2. Get the collection
+        // 2. Get collection
         const collection = db.collection("users");
         
-        // 3. Find the document.
+        // 3.document.
         return await collection.findOne({email});
         } catch(err){
           console.log(err);
