@@ -1,4 +1,4 @@
-
+// Manage routes/paths to ProductController
 
 // 1. Import express.
 import express from 'express';
