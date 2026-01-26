@@ -1,16 +1,16 @@
 import UserModel from '../user/user.model.js';
-
+import { ApplicationError } from '../../error-handler/applicationError.js';
 export default class ProductModel {
   constructor(
-    id,
     name,
     desc,
     price,
     imageUrl,
     category,
-    sizes
+    sizes,
+    id
   ) {
-    this.id = id;
+    this._id = id;
     this.name = name;
     this.desc = desc;
     this.imageUrl = imageUrl;
@@ -19,51 +19,21 @@ export default class ProductModel {
     this.sizes = sizes;
   }
 
-  static add(product) {
-    product.id = products.length + 1;
-    products.push(product);
-    return product;
-  }
-
-  static get(id) {
-    const product = products.find(
-      (i) => i.id == id
-    );
-    return product;
-  }
-
-  static getAll() {
-    return products;
-  }
-
-  static filter(minPrice, maxPrice, category) {
-    const result = products.filter((product) => {
-      return (
-        (!minPrice ||
-          product.price >= minPrice) &&
-        (!maxPrice ||
-          product.price <= maxPrice) &&
-        (!category ||
-          product.category == category)
-      );
-    });
-    return result;
-  }
-
   static rateProduct(userID, productID, rating){
     // 1. Validate user and product
     const user = UserModel.getAll().find(
       (u) => u.id == userID
     );
     if(!user){
-      return "User not found";
+      // user-defined error.
+      throw new ApplicationError("User not found", 404); 
     }
 
     // Validate Product
     const product = products.find(
       (p) => p.id == productID);
       if(!product){
-        return "Product not found";
+        throw new ApplicationError("Product not found", 400); 
       }
 
       // 2. Check if there are any ratings and if not then add ratings array.
