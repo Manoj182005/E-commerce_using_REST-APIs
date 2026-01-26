@@ -9,7 +9,7 @@ class UserRepository{
 
      async signUp(newUser) {
         try{
-
+          // 1. Get the database
         const db = getDB();
         // 2. Get the collection
         const collection = db.collection(this.collection);
@@ -42,10 +42,10 @@ class UserRepository{
         try{
           // 1. Get the database
         const db = getDB();
-        // 2. Get collection
+        // 2. Get the collection
         const collection = db.collection("users");
         
-        // 3.document.
+        // 3. Find the document.
         return await collection.findOne({email});
         } catch(err){
           console.log(err);
