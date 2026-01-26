@@ -10,7 +10,17 @@ import productRouter from './src/features/product/product.routes.js';
 import userRouter from './src/features/user/user.routes.js';
 import jwtAuth from './src/middlewares/jwt.middleware.js';
 import cartRouter from './src/features/cartItems/cartItems.routes.js';
-import apiDocs from './swagger.json' assert {type: 'json'};
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const apiDocs = JSON.parse(
+  fs.readFileSync(path.join(__dirname, 'swagger.json'), 'utf-8')
+);
+
 import loggerMiddleware from './src/middlewares/logger.middleware.js';
 import { ApplicationError } from './src/error-handler/applicationError.js';
 import {connectToMongoDB} from './src/config/mongodb.js';
