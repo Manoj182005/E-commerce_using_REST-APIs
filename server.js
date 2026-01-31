@@ -21,6 +21,7 @@ const apiDocs = JSON.parse(
 import loggerMiddleware from './src/middlewares/logger.middleware.js';
 import { ApplicationError } from './src/error-handler/applicationError.js';
 import {connectToMongoDB} from './src/config/mongodb.js';
+import orderRouter from './src/order/order.routes.js';
 
 // 2. Create Server
 const server = express();
@@ -54,6 +55,7 @@ server.use(
 );
 
 server.use(loggerMiddleware);
+server.use("/api/orders", orderRouter);
 
 server.use(
   '/api/products',
