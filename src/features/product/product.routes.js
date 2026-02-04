@@ -11,8 +11,6 @@ const productRouter = express.Router();
 
 const productController = new ProductController();
 
-// All the paths to controller methods.
-// localhost/api/products
 
 productRouter.post(
   '/rate',jwtAuth,
