@@ -1,5 +1,5 @@
 import ProductModel from './product.model.js';
-import ProductRepository from './product.repository.js';
+import ProductRepository from './product.repository_old.js';
 
 export default class ProductController {
   constructor(){
