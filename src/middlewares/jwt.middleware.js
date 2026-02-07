@@ -7,7 +7,7 @@ const jwtAuth = (req, res, next)=>{
     if(!token){
         return res.status(401).send('Unauthorized');
     }
-    // 3. check if token is valid.
+
     try{
         const payload = jwt.verify(
             token,
@@ -21,7 +21,6 @@ const jwtAuth = (req, res, next)=>{
         return res.status(401).send('Unauthorized');
     }
 
-    // 5. call next middleware.
     next();
 };
 
