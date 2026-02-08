@@ -6,7 +6,7 @@ import ProductController from './product.controller.js';
 import { upload } from '../../middlewares/fileupload.middleware.js';
 import jwtAuth from '../../middlewares/jwt.middleware.js';
 
-// 2. Initialize Express router.
+
 const productRouter = express.Router();
 
 const productController = new ProductController();
