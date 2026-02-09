@@ -42,7 +42,7 @@ class UserRepository{
         try{
           // 1. Get the database
         const db = getDB();
-        // 2. Get the collection
+        
         const collection = db.collection("users");
         
         // 3. Find the document.
