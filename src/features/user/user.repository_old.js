@@ -45,7 +45,7 @@ class UserRepository{
         
         const collection = db.collection("users");
         
-        // 3. Find the document.
+        
         return await collection.findOne({email});
         } catch(err){
           console.log(err);
