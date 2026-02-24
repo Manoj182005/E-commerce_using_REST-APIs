@@ -1,38 +1,45 @@
-import { LikeRepository } from "./like.repository.js";
+import mongoose from "mongoose";
+import { likeSchema } from "./like.schema.js";
+import { ObjectId } from "mongodb";
 
 
-export class LikeController{
+const LikeModel = mongoose.model("Like", likeSchema)
 
-    constructor(){
-        this.likeRepository = new LikeRepository();
+export class LikeRepository{
+
+    async getLikes(type, id){
+        return await LikeModel.find({
+            likeable: new ObjectId(id),
+            on_model:type
+        }).populate('user')
+        .populate({path:'likeable', model: type})
     }
 
-    async getLikes(req, res, next){
+    async likeProduct(userId, productId){
         try{
-            const {id, type} = req.query;
-            const likes = await this.likeRepository.getLikes(type, id);
-            return res.status(200).send(likes)
+            const newLike = new LikeModel({
+                user: new ObjectId(userId),
+                likeable: new ObjectId(productId),
+                on_model:'Product'
+            });
+            await newLike.save();
         }catch(err){
             console.log(err);
-            return res.status(200).send("Something went wrong");
-          }
+            throw new ApplicationError("Something went wrong with database", 500);    
+        }
     }
 
-    async likeItem(req, res){
+    async likeCategory(userId, categoryId){
         try{
-            const {id, type} = req.body;
-            if(type!='Product' && type!='Category'){
-                return res.status(400).send("Invalid");
-            }
-            if(type=='Product'){
-                await this.likeRepository.likeProduct(req.userID, id);
-            }else{
-                await this.likeRepository.likeCategory(req.UserID, id);    
-            }
+            const newLike = new LikeModel({
+                user: new ObjectId(userId),
+                likeable: new ObjectId(categoryId),
+                on_model:'Category'
+            });
+            await newLike.save();
         }catch(err){
             console.log(err);
-            return res.status(200).send("Something went wrong");
-          }
-          res.status(201).send();
+            throw new ApplicationError("Something went wrong with database", 500);    
+        }
     }
 }

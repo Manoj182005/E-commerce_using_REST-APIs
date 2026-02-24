@@ -18,6 +18,7 @@
     "express-basic-auth": "^1.2.1",
     "jsonwebtoken": "^9.0.3",
     "mongodb": "^7.0.0",
+    "mongoose": "^9.2.2",
     "multer": "^2.0.2",
     "swagger": "^0.7.5",
     "swagger-ui-express": "^5.0.1",
