@@ -7,21 +7,14 @@ import productRouter from './src/features/product/product.routes.js';
 import userRouter from './src/features/user/user.routes.js';
 import jwtAuth from './src/middlewares/jwt.middleware.js';
 import cartRouter from './src/features/cartItems/cartItems.routes.js';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-const apiDocs = JSON.parse(
-  fs.readFileSync(path.join(__dirname, 'swagger.json'), 'utf-8')
-);
-
+import apiDocs from './swagger.json' assert { type: 'json' };
 import loggerMiddleware from './src/middlewares/logger.middleware.js';
 import { ApplicationError } from './src/error-handler/applicationError.js';
 import {connectToMongoDB} from './src/config/mongodb.js';
-import orderRouter from './src/order/order.routes.js';
+import orderRouter from './src/features/order/order.routes.js';
+import { connectUsingMongoose } from './src/config/mongooseConfig.js';
+import mongoose from 'mongoose';
+import likeRouter from './src/features/like/like.routes.js';
 
 // 2. Create Server
 const server = express();
@@ -55,7 +48,7 @@ server.use(
 );
 
 server.use(loggerMiddleware);
-server.use("/api/orders", orderRouter);
+server.use('/api/orders', jwtAuth, orderRouter);
 
 server.use(
   '/api/products',
@@ -69,6 +62,7 @@ server.use(
   cartRouter
 );
 server.use('/api/users', userRouter);
+server.use('/api/likes', jwtAuth, likeRouter)
 
 // 3. Default request handler
 server.get('/', (req, res) => {
@@ -78,6 +72,9 @@ server.get('/', (req, res) => {
 // Error handler middleware
 server.use((err, req, res, next) => {
   console.log(err);
+  if(err instanceof mongoose.Error.ValidationError){
+    return res.status(400).send(err.message);
+  }
   if (err instanceof ApplicationError) {
     return res.status(err.code).send(err.message);
   }
@@ -102,6 +99,7 @@ server.use((req, res) => {
 // 5. Specify port.
 server.listen(3200, ()=>{
   console.log('Server is running at 3200');
-  connectToMongoDB();
+  // connectToMongoDB();
+  connectUsingMongoose();
 });
 

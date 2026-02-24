@@ -14,7 +14,8 @@ export default class CartItemsRepository{
             const collection = db.collection(this.collection)
             const id = await this.getNextCounter(db);
             // find the document
-           
+            // either insert or update
+            // Insertion.
             await collection.updateOne(
                 {productID:new ObjectId(productID), userID:new ObjectId(userID)},
                 {
